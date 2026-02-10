@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jingning Piano Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf8f5;
+            --bg-white: #ffffff;
+            --bg-dark: #6b7b6e;
+            --text-primary: #2c2c2c;
+            --text-secondary: #5a5a5a;
+            --text-muted: #8a8a8a;
+            --text-light: #ffffff;
+            --accent-gold: #c9a96e;
+            --accent-gold-light: #f5f0e6;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --nav-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-item.has-dropdown:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft);
+            padding: 12px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 24px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown a:hover {
+            background: var(--accent-gold-light);
+            color: var(--accent-gold);
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 16px;
+            padding: 6px 12px;
+            background: var(--bg-white);
+            border-radius: 100px;
+            border: 1px solid var(--border-light);
+        }
+
+        .lang-btn {
+            padding: 5px 10px;
+            border: none;
+            background: transparent;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-white);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+        }
+
+        .mobile-nav-item {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 16px 0;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .mobile-dropdown {
+            padding-left: 20px;
+            display: none;
+        }
+
+        .mobile-dropdown.active {
+            display: block;
+        }
+
+        .mobile-dropdown a {
+            display: block;
+            padding: 12px 0;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .mobile-nav-item.has-dropdown .mobile-nav-link::after {
+            content: '+';
+            float: right;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav-item.has-dropdown.active .mobile-nav-link::after {
+            transform: rotate(45deg);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent-gold);
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+        }
+
+        /* Home Section */
+        .home-section {
+            min-height: 100vh;
+            padding-top: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .home-image {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .home-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Schedule Section */
+        .schedule-section {
+            background: var(--bg-white);
+        }
+
+        .schedule-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .schedule-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .schedule-header p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .schedule-form {
+            background: var(--bg-cream);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: var(--bg-white);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-gold);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #b8944f;
+            transform: translateY(-2px);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 80px 0;
+        }
+
+        .contact-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+            color: var(--text-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .contact-info p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .contact-info a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            color: white;
+        }
+
+        /* About Page */
+        .about-section {
+            background: var(--bg-white);
+            padding-top: calc(var(--nav-height) + 60px);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        /* Lessons Page */
+        .lessons-section {
+            background: var(--bg-cream);
+            padding-top: calc(var(--nav-height) + 60px);
+        }
+
+        .lesson-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .lesson-tab {
+            padding: 10px 20px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-tab:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .lesson-tab.active {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: white;
+        }
+
+        .lesson-card {
+            display: none;
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: var(--shadow-soft);
+            max-width: 700px;
+        }
+
+        .lesson-card.active {
+            display: block;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .lesson-price {
+            background: var(--accent-gold-light);
+            color: var(--accent-gold);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .lesson-block h4 {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+            margin-top: 18px;
+            font-weight: 600;
+        }
+
+        .lesson-block p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .lesson-block ul {
+            list-style: none;
+        }
+
+        .lesson-block li {
+            position: relative;
+            padding-left: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .lesson-block li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
+
+        .lesson-note {
+            margin-top: 18px;
+            padding: 14px 18px;
+            background: var(--accent-gold-light);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Gallery Page */
+        .gallery-section {
+            background: var(--bg-white);
+            padding-top: calc(var(--nav-height) + 60px);
+        }
+
+        .gallery-image {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Policy Page */
+        .policy-section {
+            background: var(--bg-cream);
+            padding-top: calc(var(--nav-height) + 60px);
+        }
+
+        .policy-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .policy-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .policy-card h3 {
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+        }
+
+        .policy-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .policy-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            background: var(--bg-cream);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Language Content */
+        .lang-content {
+            display: none;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        /* Page visibility */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .lang-switch {
+                margin-left: auto;
+                margin-right: 16px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: 1;
+            }
+
+            .schedule-form {
+                padding: 24px;
+            }
+
+            .lesson-card {
+                padding: 24px;
+            }
+
+            .policy-card {
+                padding: 24px;
+            }
+
+            .contact-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+    <div class="nav-container">
+        <a href="#" class="nav-logo" onclick="showPage('home'); return false;">Jingning Piano Studio</a>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showPage('home'); return false;">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showPage('about'); return false;">About Me</a>
+            </li>
+            <li class="nav-item has-dropdown">
+                <a href="#" class="nav-link" onclick="showPage('lessons'); return false;">Lessons</a>
+                <div class="dropdown">
+                    <a href="#" onclick="showPage('lessons'); showLesson('trial'); return false;">Trial Lessons</a>
+                    <a href="#" onclick="showPage('lessons'); showLesson('private'); return false;">Private Lessons</a>
+                    <a href="#" onclick="showPage('lessons'); showLesson('group'); return false;">Group Lessons</a>
+                    <a href="#" onclick="showPage('lessons'); showLesson('studio'); return false;">Studio Lessons</a>
+                    <a href="#" onclick="showPage('lessons'); showLesson('tuition'); return false;">Tuition</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showPage('gallery'); return false;">Gallery</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showPage('policy'); return false;">Policy</a>
+            </li>
+            <li class="nav-item">
+                <a href="#contact" class="nav-link">Contact</a>
+            </li>
+        </ul>
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+            <button class="lang-btn" onclick="switchLang('zh')">中文</button>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav-links">
+        <li class="mobile-nav-item">
+            <a href="#" class="mobile-nav-link" onclick="showPage('home'); closeMobileMenu(); return false;">Home</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="#" class="mobile-nav-link" onclick="showPage('about'); closeMobileMenu(); return false;">About Me</a>
+        </li>
+        <li class="mobile-nav-item has-dropdown">
+            <a href="#" class="mobile-nav-link" onclick="toggleMobileDropdown(this); return false;">Lessons</a>
+            <div class="mobile-dropdown">
+                <a href="#" onclick="showPage('lessons'); showLesson('trial'); closeMobileMenu(); return false;">Trial Lessons</a>
+                <a href="#" onclick="showPage('lessons'); showLesson('private'); closeMobileMenu(); return false;">Private Lessons</a>
+                <a href="#" onclick="showPage('lessons'); showLesson('group'); closeMobileMenu(); return false;">Group Lessons</a>
+                <a href="#" onclick="showPage('lessons'); showLesson('studio'); closeMobileMenu(); return false;">Studio Lessons</a>
+                <a href="#" onclick="showPage('lessons'); showLesson('tuition'); closeMobileMenu(); return false;">Tuition</a>
+            </div>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="#" class="mobile-nav-link" onclick="showPage('gallery'); closeMobileMenu(); return false;">Gallery</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="#" class="mobile-nav-link" onclick="showPage('policy'); closeMobileMenu(); return false;">Policy</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu();">Contact</a>
+        </li>
+    </ul>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+    <!-- Home Section -->
+    <section id="home" class="home-section">
+        <div class="container">
+            <div class="home-image">
+                <img src="assets/1.jpg" alt="Jingning Piano Studio">
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <div class="schedule-content">
+                <div class="schedule-header">
+                    <div class="section-label">Get Started</div>
+                    <h2 class="lang-content active" data-lang="en">Schedule Your Lessons</h2>
+                    <h2 class="lang-content" data-lang="zh">预约您的课程</h2>
+                    <p class="lang-content active" data-lang="en">Ready to begin your musical journey? Fill out the form and we'll get back to you within 24 hours.</p>
+                    <p class="lang-content" data-lang="zh">准备开始您的音乐之旅吗？填写表单，我们将在24小时内与您联系。</p>
+                </div>
+                <div class="schedule-form">
+                    <form id="scheduleForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Student Name *</span>
+                                    <span class="lang-content" data-lang="zh">学生姓名 *</span>
+                                </label>
+                                <input type="text" name="studentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Age *</span>
+                                    <span class="lang-content" data-lang="zh">年龄 *</span>
+                                </label>
+                                <input type="number" name="age" min="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Parent/Guardian Name</span>
+                                    <span class="lang-content" data-lang="zh">家长/监护人姓名</span>
+                                </label>
+                                <input type="text" name="parentName">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Phone *</span>
+                                    <span class="lang-content" data-lang="zh">电话 *</span>
+                                </label>
+                                <input type="tel" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Email *</span>
+                                    <span class="lang-content" data-lang="zh">邮箱 *</span>
+                                </label>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Lesson Type</span>
+                                    <span class="lang-content" data-lang="zh">课程类型</span>
+                                </label>
+                                <select name="lessonType">
+                                    <option value="trial">Trial Lesson / 试听课</option>
+                                    <option value="private">Private Lesson / 私人课程</option>
+                                    <option value="group">Group Lesson / 小组课程</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>
+                                    <span class="lang-content active" data-lang="en">Musical Background & Preferred Schedule</span>
+                                    <span class="lang-content" data-lang="zh">音乐背景和期望上课时间</span>
+                                </label>
+                                <textarea name="notes" placeholder="Any previous experience? Preferred time?"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span class="lang-content active" data-lang="en">Submit Request</span>
+                            <span class="lang-content" data-lang="zh">提交申请</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-content">
+                <h2>Jingning Piano Studio</h2>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                            <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="contact-info">
+                    <p>Email: <a href="mailto:jingningliu56@gmail.com">jingningliu56@gmail.com</a></p>
+                    <p>Phone: <a href="tel:+12832158551">+1 (283) - 215 8551</a></p>
+                    <p>Address: Oxford, OH ............</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="page-about" class="page">
+    <section class="about-section">
+        <div class="container">
+            <div class="section-label">About Me</div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="assets/2.png" alt="Jingning Liu">
+                </div>
+                <div class="about-text">
+                    <div class="lang-content active" data-lang="en">
+                        <h2>Jingning Liu</h2>
+                        <p>Jingning Liu is a pianist and piano educator currently pursuing her Master's degree in Piano Performance at Miami University (USA). She earned her Bachelor's degree in Music Education from Nanjing Xiaozhuang University, where she received comprehensive training in piano, voice, and erhu. Her academic background has given her a solid foundation in both performance and pedagogy.</p>
+                        <p>With over five years of teaching experience, Jingning has worked with students of all ages—from young children to teenagers and adults—at music studios and educational institutions across China. She offers both private and small-group lessons and emphasizes an individualized teaching approach, adapting her methods to each student's personality, learning pace, and musical goals. Her lessons are designed to be structured yet relaxed, supporting steady and confident progress.</p>
+                        <p>In addition to teaching, Jingning actively participates in music programs, performances, and educational exchanges in both China and the United States. These experiences continue to broaden her musical perspective and inform her teaching practice.</p>
+                        <p>Known for her patience, warmth, and attentiveness, Jingning is especially skilled in working with children and maintaining clear, supportive communication with parents. She believes that piano learning is not only about technical development, but also about cultivating confidence, focus, and a genuine love for music. Through her teaching, she aims to support students as they grow musically and enjoy the learning process step by step.</p>
+                    </div>
+                    <div class="lang-content" data-lang="zh">
+                        <h2>刘静宁</h2>
+                        <p>刘静宁是一位钢琴演奏家和钢琴教育者，目前正在美国迈阿密大学攻读钢琴演奏硕士学位。她在南京晓庄学院获得音乐教育学士学位，在那里接受了钢琴、声乐和二胡的全面训练。她的学术背景为她在表演和教学方面奠定了坚实的基础。</p>
+                        <p>凭借五年多的教学经验，静宁曾在中国各地的音乐工作室和教育机构与各年龄段的学生合作——从幼童到青少年和成人。她提供私人课程和小组课程，强调个性化的教学方法，根据每个学生的性格、学习节奏和音乐目标调整教学方法。她的课程设计既有结构性又轻松，支持学生稳步自信地进步。</p>
+                        <p>除了教学，静宁还积极参与中美两国的音乐项目、演出和教育交流活动。这些经历不断拓宽她的音乐视野，并为她的教学实践提供参考。</p>
+                        <p>静宁以耐心、热情和细心著称，尤其擅长与儿童合作，并与家长保持清晰、支持性的沟通。她相信钢琴学习不仅是技术发展，也是培养自信、专注力和对音乐真正热爱的过程。通过教学，她旨在支持学生在音乐上成长，并一步一步享受学习过程。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- LESSONS PAGE -->
+<div id="page-lessons" class="page">
+    <section class="lessons-section">
+        <div class="container">
+            <div class="section-label">Lessons</div>
+            <h2 class="lang-content active" data-lang="en">Course Offerings</h2>
+            <h2 class="lang-content" data-lang="zh">课程设置</h2>
+
+            <div class="lesson-tabs">
+                <button class="lesson-tab active" onclick="showLesson('trial')">
+                    <span class="lang-content active" data-lang="en">Trial Lessons</span>
+                    <span class="lang-content" data-lang="zh">试听课</span>
+                </button>
+                <button class="lesson-tab" onclick="showLesson('private')">
+                    <span class="lang-content active" data-lang="en">Private Lessons</span>
+                    <span class="lang-content" data-lang="zh">私人课程</span>
+                </button>
+                <button class="lesson-tab" onclick="showLesson('group')">
+                    <span class="lang-content active" data-lang="en">Group Lessons</span>
+                    <span class="lang-content" data-lang="zh">小组课程</span>
+                </button>
+                <button class="lesson-tab" onclick="showLesson('studio')">
+                    <span class="lang-content active" data-lang="en">Studio Lessons</span>
+                    <span class="lang-content" data-lang="zh">集体课程</span>
+                </button>
+                <button class="lesson-tab" onclick="showLesson('accompanied')">
+                    <span class="lang-content active" data-lang="en">Accompanied Lessons</span>
+                    <span class="lang-content" data-lang="zh">陪练课</span>
+                </button>
+                <button class="lesson-tab" onclick="showLesson('tuition')">
+                    <span class="lang-content active" data-lang="en">Tuition</span>
+                    <span class="lang-content" data-lang="zh">学费</span>
+                </button>
+            </div>
+
+            <!-- Trial Lessons -->
+            <div id="trial" class="lesson-card active">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Trial Lessons</h3>
+                        <h3 class="lang-content" data-lang="zh">试听课</h3>
+                    </div>
+                    <span class="lesson-price">15-20 min | $25</span>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <p>Trial lessons are available for new students who are interested in learning about the studio's teaching approach. The purpose of the trial lesson is to help both the student and the instructor determine whether the studio is a good fit.</p>
+                    <h4>Recommended Ages</h4>
+                    <p>Ages 4 and up (with basic communication skills)</p>
+                    <h4>Lesson Content Includes</h4>
+                    <ul>
+                        <li>An initial assessment of the student's musical background and level</li>
+                        <li>A brief introduction to basic piano technique and musical concepts</li>
+                        <li>Discussion of learning goals and lesson structure</li>
+                    </ul>
+                    <div class="lesson-note">Following the trial lesson, the instructor will provide recommendations regarding lesson type, duration, and an individualized learning plan. The trial lesson is designed to be relaxed, supportive, and pressure-free.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <p>试听课面向有意了解本工作室教学方式的新学生，旨在帮助学生与老师双方判断是否适合继续学习。</p>
+                    <h4>适合年龄</h4>
+                    <p>4岁以上（有沟通能力）</p>
+                    <h4>试听课内容包括</h4>
+                    <ul>
+                        <li>对学生音乐背景与学习程度的初步评估</li>
+                        <li>基础技巧与音乐的简单体验</li>
+                        <li>学习目标与课程安排的沟通与建议</li>
+                    </ul>
+                    <div class="lesson-note">试听课结束后，老师将根据学生情况提供关于课程类型、时长及学习规划的建议。试听课以轻松、支持性的方式进行，不设任何学习压力。</div>
+                </div>
+            </div>
+
+            <!-- Private Lessons -->
+            <div id="private" class="lesson-card">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Private Lessons</h3>
+                        <h3 class="lang-content" data-lang="zh">私人课程</h3>
+                    </div>
+                    <span class="lesson-price">30 min $35 | 45 min $45 | 60 min $60</span>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <p>Private lessons provide individualized instruction tailored to each student's age, level, and musical goals. Lessons focus on building a strong technical foundation while developing musical understanding and expressive playing.</p>
+                    <h4>Recommended Ages</h4>
+                    <p>Ages 4 and up (children, teens, and adults)</p>
+                    <h4>Lesson Content Includes</h4>
+                    <ul>
+                        <li>Fundamental piano technique and healthy hand position</li>
+                        <li>Reading skills and rhythm training</li>
+                        <li>Repertoire selection and study</li>
+                        <li>Musical expression and stylistic understanding</li>
+                        <li>Effective practice strategies and goal planning</li>
+                        <li>Performance and exam preparation (as appropriate)</li>
+                    </ul>
+                    <div class="lesson-note">Private lessons are ideal for students seeking structured instruction and consistent musical progress.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <p>私人课程根据学生的年龄、水平和音乐目标进行个性化教学，注重在建立扎实技术基础的同时，培养音乐理解力与表现力。</p>
+                    <h4>适合年龄</h4>
+                    <p>4岁以上（儿童、青少年及成人）</p>
+                    <h4>课程内容包括</h4>
+                    <ul>
+                        <li>钢琴基础技巧与手型训练</li>
+                        <li>识谱与节奏训练</li>
+                        <li>曲目选择与学习</li>
+                        <li>音乐表现与风格理解</li>
+                        <li>科学练习方法与学习规划</li>
+                        <li>演出与考试准备（视学生情况而定）</li>
+                    </ul>
+                    <div class="lesson-note">私人课程适合希望获得系统、稳定进步的学生。</div>
+                </div>
+            </div>
+
+            <!-- Group Lessons -->
+            <div id="group" class="lesson-card">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Group Lessons</h3>
+                        <h3 class="lang-content" data-lang="zh">小组课程</h3>
+                    </div>
+                    <span class="lesson-price">45 min | $30/per student</span>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <p>Group lessons provide a collaborative learning environment where students develop musicianship through interaction and shared musical activities. Lessons are designed to help students build musical skills in a relaxed and enjoyable setting.</p>
+                    <h4>Recommended Ages</h4>
+                    <p>Ages 4 and up (Groups are formed based on age and level)</p>
+                    <h4>Lesson Content Includes</h4>
+                    <ul>
+                        <li>Rhythm and coordination training</li>
+                        <li>Ensemble playing and listening skills</li>
+                        <li>Sight-reading practice</li>
+                        <li>Fundamental music theory</li>
+                        <li>Musical games and creative activities</li>
+                    </ul>
+                    <div class="lesson-note">Group lessons help students build confidence, cooperation, and a genuine interest in music. They may be taken independently or as a supplement to private lessons.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <p>小组课程通过互动与合作的学习方式，帮助学生在轻松愉快的环境中提升音乐素养。</p>
+                    <h4>适合年龄</h4>
+                    <p>4岁以上（根据年龄和程度分组）</p>
+                    <h4>课程内容包括</h4>
+                    <ul>
+                        <li>节奏与协调能力训练</li>
+                        <li>合奏与聆听能力培养</li>
+                        <li>视奏练习</li>
+                        <li>基础乐理知识</li>
+                        <li>音乐游戏与创造性活动</li>
+                    </ul>
+                    <div class="lesson-note">小组课程有助于增强自信心、合作能力和学习兴趣，可单独报名或作为私人课的补充。</div>
+                </div>
+            </div>
+
+            <!-- Studio Lessons -->
+            <div id="studio" class="lesson-card">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Studio Class</h3>
+                        <h3 class="lang-content" data-lang="zh">Studio 集体课程</h3>
+                    </div>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <p>Studio classes are held periodically and provide students with performance and enrichment opportunities beyond regular weekly lessons.</p>
+                    <h4>Recommended Ages</h4>
+                    <p>Ages 4 and up</p>
+                    <h4>Class Content May Include</h4>
+                    <ul>
+                        <li>Studio recitals</li>
+                        <li>Performance classes and in-class performances</li>
+                        <li>Peer feedback and group discussion</li>
+                        <li>Masterclass-style instruction</li>
+                    </ul>
+                    <div class="lesson-note">Studio classes help students develop stage presence, confidence, and meaningful musical communication skills.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <p>Studio 集体课程定期举行，为学生提供除日常课程之外的演出与拓展学习机会。</p>
+                    <h4>适合年龄</h4>
+                    <p>4岁以上</p>
+                    <h4>课程内容可能包括</h4>
+                    <ul>
+                        <li>Studio 音乐会</li>
+                        <li>演奏展示与课堂演出</li>
+                        <li>表演者互评</li>
+                        <li>大师课形式的指导</li>
+                    </ul>
+                    <div class="lesson-note">Studio 课程帮助学生提升舞台表现力、自信心以及音乐交流能力。</div>
+                </div>
+            </div>
+
+            <!-- Accompanied Lessons -->
+            <div id="accompanied" class="lesson-card">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Accompanied Lessons</h3>
+                        <h3 class="lang-content" data-lang="zh">陪练课</h3>
+                    </div>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <p>Accompanied lessons focus on guided practice and learning supervision to help students reinforce material learned in regular lessons and develop effective practice habits. These sessions emphasize practice support rather than the introduction of new technical or musical concepts.</p>
+                    <h4>Recommended Ages</h4>
+                    <p>Ages 4 and up (Recommended for students who benefit from structured practice guidance)</p>
+                    <h4>Lesson Content Includes</h4>
+                    <ul>
+                        <li>Review and reinforcement of lesson material</li>
+                        <li>Guidance on practice structure and time management</li>
+                        <li>Breaking down practice goals and addressing specific challenges</li>
+                        <li>Supervised slow practice, fingering, and rhythm accuracy</li>
+                        <li>Development of focus, consistency, and healthy practice habits</li>
+                    </ul>
+                    <div class="lesson-note">Accompanied lessons are offered as a supplement to private lessons and do not replace formal private instruction.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <p>陪练课主要以练习指导与学习监督为核心，帮助学生巩固课堂所学内容，建立良好的练琴习惯。课程重点不在于教授新知识，而在于协助学生高效完成日常练习。</p>
+                    <h4>适合年龄</h4>
+                    <p>4岁以上（适合需要练习督促与方法引导的学生）</p>
+                    <h4>课程内容包括</h4>
+                    <ul>
+                        <li>课堂内容的复习与巩固</li>
+                        <li>练琴流程与时间管理指导</li>
+                        <li>练习重点拆分与问题纠正</li>
+                        <li>节奏、指法及慢练方法的监督</li>
+                        <li>练琴习惯与专注力培养</li>
+                    </ul>
+                    <div class="lesson-note">陪练课可作为私人课程的补充，帮助学生提高练习效率，但不替代正式的私人课程。</div>
+                </div>
+            </div>
+
+            <!-- Tuition -->
+            <div id="tuition" class="lesson-card">
+                <div class="lesson-header">
+                    <div>
+                        <h3 class="lang-content active" data-lang="en">Tuition & Fees</h3>
+                        <h3 class="lang-content" data-lang="zh">学费说明</h3>
+                    </div>
+                </div>
+                <div class="lesson-block lang-content active" data-lang="en">
+                    <h4>Trial Lesson</h4>
+                    <p>15-20 minutes — $25</p>
+                    <h4>Private Lessons</h4>
+                    <p>30 minutes — $35<br>45 minutes — $45<br>60 minutes — $60</p>
+                    <h4>Group Lessons</h4>
+                    <p>45 minutes — $30 per student</p>
+                    <div class="lesson-note">Payment is due at the beginning of each month. Accepted payment methods include cash, check, Venmo, and Zelle.</div>
+                </div>
+                <div class="lesson-block lang-content" data-lang="zh">
+                    <h4>试听课</h4>
+                    <p>15-20分钟 — $25</p>
+                    <h4>私人课程</h4>
+                    <p>30分钟 — $35<br>45分钟 — $45<br>60分钟 — $60</p>
+                    <h4>小组课程</h4>
+                    <p>45分钟 — $30/每人</p>
+                    <div class="lesson-note">学费需在每月初支付。接受的支付方式包括现金、支票、Venmo和Zelle。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- GALLERY PAGE -->
+<div id="page-gallery" class="page">
+    <section class="gallery-section">
+        <div class="container">
+            <div class="section-label">Gallery</div>
+            <h2 class="lang-content active" data-lang="en">Studio Gallery</h2>
+            <h2 class="lang-content" data-lang="zh">工作室展示</h2>
+            <div class="gallery-image">
+                <img src="assets/3.jpg" alt="Gallery">
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- POLICY PAGE -->
+<div id="page-policy" class="page">
+    <section class="policy-section">
+        <div class="container">
+            <div class="section-label">Studio Policy</div>
+            <h2 class="lang-content active" data-lang="en">Policies & Guidelines</h2>
+            <h2 class="lang-content" data-lang="zh">政策与指南</h2>
+
+            <div class="policy-grid">
+                <!-- Enrollment & Scheduling -->
+                <div class="policy-card">
+                    <h3 class="lang-content active" data-lang="en">Enrollment & Scheduling</h3>
+                    <h3 class="lang-content" data-lang="zh">注册和排课</h3>
+                    <div class="lang-content active" data-lang="en">
+                        <p>Lessons are scheduled on a weekly basis at a fixed time.</p>
+                        <p>Enrollment is subject to studio availability, and lesson times are reserved exclusively for each student.</p>
+                    </div>
+                    <div class="lang-content" data-lang="zh">
+                        <p>课程采用每周固定时间制，具体时间视工作室空余情况安排。</p>
+                        <p>注册成功后，该上课时间将为学生单独保留。</p>
+                    </div>
+                </div>
+
+                <!-- Attendance & Cancellation -->
+                <div class="policy-card">
+                    <h3 class="lang-content active" data-lang="en">Attendance & Cancellation</h3>
+                    <h3 class="lang-content" data-lang="zh">出勤与请假</h3>
+                    <div class="lang-content active" data-lang="en">
+                        <p>For lesson cancellations, please provide at least 24 hours' notice.</p>
+                        <p>Missed lessons without proper notice cannot be made up or refunded. Students who attend all scheduled lessons will be eligible for appropriate recognition or rewards. (Each month, up to two absences for illness or personal reasons are allowed without penalty.) Make-up lessons are subject to instructor availability and cannot be guaranteed.</p>
+                        <p>If a lesson is canceled due to instructor reasons, a make-up lesson will be scheduled.</p>
+                    </div>
+                    <div class="lang-content" data-lang="zh">
+                        <p>如需请假，请至少提前24小时通知。</p>
+                        <p>未提前请假而缺席的课程，恕不补课或退款，全勤会有适当的奖励。（每月有两次事病假无责取消机会）补课视教师时间安排而定，无法保证一定提供。</p>
+                        <p>如因教师原因导致课程取消，将安排补课。</p>
+                    </div>
+                </div>
+
+                <!-- Class Expectations -->
+                <div class="policy-card">
+                    <h3 class="lang-content active" data-lang="en">Class Expectations</h3>
+                    <h3 class="lang-content" data-lang="zh">课堂要求</h3>
+                    <div class="lang-content active" data-lang="en">
+                        <p>Students are expected to arrive on time and come prepared for each lesson.</p>
+                        <p>Respect for the instructor, studio environment, and instruments is required at all times.</p>
+                        <p>Regular and structured practice is an essential part of learning the piano. Students are expected to practice consistently according to guidance provided in lessons to ensure steady progress.</p>
+                    </div>
+                    <div class="lang-content" data-lang="zh">
+                        <p>学生应准时到达课堂并做好上课准备。</p>
+                        <p>请尊重教师、工作室环境及乐器设备。持续、有计划的练习是学习钢琴的重要组成部分。</p>
+                        <p>学生需按照课堂要求进行规律练习，以保证学习效果。</p>
+                    </div>
+                </div>
+
+                <!-- Parent Feedback -->
+                <div class="policy-card">
+                    <h3 class="lang-content active" data-lang="en">Parent Feedback</h3>
+                    <h3 class="lang-content" data-lang="zh">家长建议栏</h3>
+                    <div class="lang-content active" data-lang="en">
+                        <p>Parent feedback is highly valued and helps the studio continually improve.</p>
+                        <p>If you have any suggestions regarding lesson content, practice routines, teaching methods, or other aspects of the studio, please feel free to share them with the instructor.</p>
+                        <p>All feedback will be carefully considered, and adjustments will be made whenever possible to better support the student's learning and growth.</p>
+                    </div>
+                    <div class="lang-content" data-lang="zh">
+                        <p>家长的意见对工作室的持续改进非常重要。如果您有任何关于课程内容、练习安排、教学方法或其他方面的建议，欢迎随时向教师提出。</p>
+                        <p>我们会认真倾听并在可能的范围内进行调整，以更好地支持学生的学习和成长。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p>© 2025 Jingning Piano Studio. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Page Navigation
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+        
+        const targetPage = document.getElementById('page-' + pageId);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // Language Switcher
+    function switchLang(lang) {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if ((lang === 'en' && btn.textContent === 'EN') || (lang === 'zh' && btn.textContent === '中文')) {
+                btn.classList.add('active');
+            }
+        });
+
+        document.querySelectorAll('.lang-content').forEach(content => {
+            content.classList.remove('active');
+            if (content.getAttribute('data-lang') === lang) {
+                content.classList.add('active');
+            }
+        });
+
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    }
+
+    // Lesson Tab Switcher
+    function showLesson(lessonId) {
+        document.querySelectorAll('.lesson-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        document.querySelectorAll('.lesson-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        document.getElementById(lessonId)?.classList.add('active');
+        
+        const tabs = document.querySelectorAll('.lesson-tab');
+        const tabIds = ['trial', 'private', 'group', 'studio', 'accompanied', 'tuition'];
+        const index = tabIds.indexOf(lessonId);
+        if (index >= 0 && tabs[index]) {
+            tabs[index].classList.add('active');
+        }
+    }
+
+    // Mobile Menu
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('active');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    }
+
+    function closeMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function toggleMobileDropdown(element) {
+        const parent = element.parentElement;
+        parent.classList.toggle('active');
+        const dropdown = parent.querySelector('.mobile-dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#contact') {
+                e.preventDefault();
+                showPage('home');
+                setTimeout(() => {
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        });
+    });
+
+    // Form submission
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your submission! We will contact you within 24 hours.');
+        this.reset();
+    });
+
+    // Navigation scroll effect
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.nav');
+        if (window.scrollY > 50) {
+            nav.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.08)';
+        } else {
+            nav.style.boxShadow = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
