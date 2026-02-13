@@ -603,12 +603,53 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow-soft);
+            margin-bottom: 60px;
         }
 
         .gallery-image img {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* Performance Opportunities */
+        .performance-section {
+            background: var(--bg-cream);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 20px;
+        }
+
+        .performance-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+
+        .performance-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .performance-list li {
+            position: relative;
+            padding-left: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .performance-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+        }
+
+        .performance-note {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-top: 20px;
         }
 
         /* Policy Page */
@@ -731,6 +772,10 @@
 
             .contact-content h2 {
                 font-size: 1.8rem;
+            }
+
+            .performance-section {
+                padding: 24px;
             }
         }
     </style>
@@ -993,7 +1038,7 @@
                     <span class="lang-content" data-lang="zh">集体课程</span>
                 </button>
                 <button class="lesson-tab" onclick="showLesson('accompanied')">
-                    <span class="lang-content active" data-lang="en">Accompanied Lessons</span>
+                    <span class="lang-content active" data-lang="en">Accompanied</span>
                     <span class="lang-content" data-lang="zh">陪练课</span>
                 </button>
                 <button class="lesson-tab" onclick="showLesson('tuition')">
@@ -1157,7 +1202,7 @@
             <div id="accompanied" class="lesson-card">
                 <div class="lesson-header">
                     <div>
-                        <h3 class="lang-content active" data-lang="en">Accompanied Lessons</h3>
+                        <h3 class="lang-content active" data-lang="en">Accompanied</h3>
                         <h3 class="lang-content" data-lang="zh">陪练课</h3>
                     </div>
                 </div>
@@ -1231,6 +1276,36 @@
             <h2 class="lang-content" data-lang="zh">工作室展示</h2>
             <div class="gallery-image">
                 <img src="assets/3.jpg" alt="Gallery">
+            </div>
+
+            <!-- Performance Opportunities Section -->
+            <div class="performance-section">
+                <h3 class="lang-content active" data-lang="en">Performance Opportunities</h3>
+                <h3 class="lang-content" data-lang="zh">演奏会和表演机会分享</h3>
+                
+                <div class="lang-content active" data-lang="en">
+                    <p>The studio provides the following performance and learning opportunities each year:</p>
+                    <ul class="performance-list">
+                        <li>Studio Class — Held weekly</li>
+                        <li>Summer Recital — Late May or early June</li>
+                        <li>New Year Recital — Early December</li>
+                        <li>Masterclasses — Scheduled 1–2 times per year (dates to be announced)</li>
+                    </ul>
+                    <p class="performance-note">Exact dates and venue information will be announced 6–8 weeks in advance.</p>
+                    <p class="performance-note">Students are generally expected to begin preparing repertoire 8–10 weeks prior to performances or masterclasses. Participation requires consistent practice and teacher approval. Festival or competition participation may be recommended based on each student's level of preparation.</p>
+                </div>
+                
+                <div class="lang-content" data-lang="zh">
+                    <p>本工作室每年提供以下演出与学习机会：</p>
+                    <ul class="performance-list">
+                        <li>Studio 课程 — 每周一次</li>
+                        <li>夏季音乐会 — 5月底或6月初</li>
+                        <li>新年音乐会 — 12月初</li>
+                        <li>大师课 — 每年安排 1–2 次（具体时间另行通知）</li>
+                    </ul>
+                    <p class="performance-note">具体日期及场地信息将提前 6–8 周公布。</p>
+                    <p class="performance-note">学生通常需在演出或大师课前 8–10 周开始准备曲目。参与活动需保持稳定练习，并经教师确认。音乐节或比赛将根据学生准备情况推荐参加。</p>
+                </div>
             </div>
         </div>
     </section>
